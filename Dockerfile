@@ -10,7 +10,10 @@ COPY .babelrc tsconfig.json webpack*.ts /home/node/
 
 #RUN npm run downloadCertBundle
 #RUN npm run downloadFlags
+
 RUN npm run build
 
-CMD node /home/node/src/server/index.js
+COPY ./server /home/node/server/
+
+CMD ["node", "/home/node/server/index.js"]
 

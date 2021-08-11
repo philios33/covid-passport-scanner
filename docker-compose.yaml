@@ -1,0 +1,16 @@
+version: "3.5"
+services:
+  scanner:
+    build: .
+    volumes:
+      - type: bind
+        source: ./server/reports
+        target: /home/node/server/reports
+    restart: always
+    networks:
+      - master
+networks:
+  master:
+    name: master
+
+  

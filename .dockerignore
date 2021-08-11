@@ -15,5 +15,5 @@
 #/src/images/flags/png20h/*
 #!/src/images/flags/png20h/.gitkeep
 
-/src/server/reports/*
-!/src/server/reports/.gitkeep
+/server/reports/*
+!/server/reports/.gitkeep

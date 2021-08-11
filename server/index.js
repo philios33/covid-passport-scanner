@@ -4,7 +4,7 @@ const express = require("express");
 const compression = require('compression');
 const mkdirp = require('mkdirp')
 
-const DIST_DIR = path.join(__dirname, "..", "..", "dist");
+const DIST_DIR = path.join(__dirname, "..", "dist");
 const PORT = 8081;
 const app = express();
 
@@ -59,10 +59,8 @@ app.listen(PORT);
 
 console.log("Listening on port " + PORT);
 
+// Required for control+C compatibility
+process.on("SIGINT", () => {
+  process.exit(1);
+})
 
-process.on("SIGHUP", () => {
-  process.exit(1);
-});
-process.on("SIGTERM", () => {
-  process.exit(1);
-});
