@@ -33,6 +33,12 @@ app.get("/favicon.ico", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "favicon.ico"));
 });
 
+// Sitemap
+app.get("/sitemap.xml", function (req, res) {
+  // No cache
+  res.sendFile(path.join(DIST_DIR, "sitemap.xml"));
+});
+
 // Serve all other files in the dist folder with long cache control
 app.use(express.static(DIST_DIR, {
   maxAge: "1y",

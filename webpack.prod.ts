@@ -51,7 +51,8 @@ prodConfig.plugins.push(
     new CopyWebpackPlugin({
         patterns: [
             path.resolve(__dirname, "src", "public", "favicon.ico"),
-            path.resolve(__dirname, "src", "public", "robots.txt")
+            path.resolve(__dirname, "src", "public", "robots.txt"),
+            path.resolve(__dirname, "src", "public", "sitemap.xml")
         ]
     })
 );
