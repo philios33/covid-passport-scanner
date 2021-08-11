@@ -58,3 +58,11 @@ app.post("/usage/:type", (req, res) => {
 app.listen(PORT);
 
 console.log("Listening on port " + PORT);
+
+
+process.on("SIGHUP", () => {
+  process.exit(1);
+});
+process.on("SIGTERM", () => {
+  process.exit(1);
+});

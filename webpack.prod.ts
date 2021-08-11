@@ -52,9 +52,11 @@ prodConfig.plugins.push(
         ]
     })
 );
+/*
 prodConfig.plugins.push(
     new BundleAnalyzerPlugin()
 );
+*/
 prodConfig.devtool = false;
 prodConfig.stats = "errors-only";
 

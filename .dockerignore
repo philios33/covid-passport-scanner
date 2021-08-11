@@ -1,0 +1,19 @@
+/node_modules
+
+# other
+/src/lib/test.ts
+/src/dumpCert.ts
+
+/dist/
+/src/compiled/*
+!/src/compiled/.gitkeep
+!/src/compiled/flags.ts
+!/src/compiled/certs.json
+
+/src/images/flags/svg/*
+!/src/images/flags/svg/.gitkeep
+#/src/images/flags/png20h/*
+#!/src/images/flags/png20h/.gitkeep
+
+/src/server/reports/*
+!/src/server/reports/.gitkeep
