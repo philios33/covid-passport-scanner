@@ -21,12 +21,12 @@ export function ControlPanel(props: Props) {
 
             {!props.isScanning ? (
                 <button className="startScanning" onClick={() => props.startScanning()}>
-                    <img className="icon" src={qrCode} />
+                    <img className="icon" src={qrCode} alt="QR Code" />
                     <span>Start scanning</span>
                 </button>
             ) : (
                 <button className="stopScanning" onClick={() => props.stopScanning(true)}>
-                    <img className="icon" src={stopSvg} />
+                    <img className="icon" src={stopSvg} alt="Stop"/>
                     <span>Stop scanning</span>
                 </button>
             )}

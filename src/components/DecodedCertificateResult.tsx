@@ -78,7 +78,7 @@ function DecodedCertificateResult(props: Props) {
                         <h1>Signing Authority</h1>
                         <div className="signingAuthority">
                             <div className="left">
-                                <img className="certificateIcon" src={certificateIcon} />
+                                <img className="certificateIcon" src={certificateIcon} alt="Certificate" />
                             </div>
                             <div className="right">
                                 { result.result.signingKey ? (
@@ -99,12 +99,12 @@ function DecodedCertificateResult(props: Props) {
                                             <tr>
                                                 <td className="heading">Issuer</td>
                                                 <td className="code">{result.result.signingKey.issuer} {issuerFlag !== null && (
-                                                    <img className="smallFlag" src={issuerFlag} />
+                                                    <img className="smallFlag" src={issuerFlag} alt={result.result.signingKey.issuer + " flag"} />
                                                 )}</td>
                                             </tr>
                                             <tr>
                                                 <td className="heading">Authoritative URL</td>
-                                                <td className="value"><a href={result.result.signingKey.fromUrl} target="_blank">View</a></td>
+                                                <td className="value"><a href={result.result.signingKey.fromUrl} target="_blank" rel="noopener">View</a></td>
                                             </tr>
                                             
                                             {result.result.signingKey?.certificate && (
@@ -156,7 +156,7 @@ function DecodedCertificateResult(props: Props) {
                                     <tr>
                                         <td className="heading">Issuer</td>
                                         <td className="code">{result.result.signingKey?.issuer} {issuerFlag !== null && (
-                                            <img className="smallFlag" src={issuerFlag} />
+                                            <img className="smallFlag" src={issuerFlag} alt={result.result.signingKey?.issuer + " flag"}/>
                                         )}</td>
                                     </tr>
                                     <tr>
@@ -220,7 +220,7 @@ function DecodedCertificateResult(props: Props) {
                                 </table>
 
                                 <h2>Vaccination Certificate Details</h2>
-                                <img className="injectionIcon" src={injectionIcon} />
+                                <img className="injectionIcon" src={injectionIcon} alt="Injection" />
                                 <table>
                                     <tbody>
                                         <tr>
@@ -234,7 +234,7 @@ function DecodedCertificateResult(props: Props) {
                                         <tr>
                                             <td className="heading">Administered country</td>
                                             <td className="value">{result.result.healthClaims.certificate.administeredCountryCode} {administeredFlag !== null && (
-                                                <img className="smallFlag" src={administeredFlag} />
+                                                <img className="smallFlag" src={administeredFlag} alt={result.result.healthClaims.certificate.administeredCountryCode + " flag"} />
                                             )}</td>
                                         </tr>
                                         <tr>

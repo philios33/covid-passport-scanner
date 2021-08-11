@@ -3,6 +3,8 @@
 import * as webpack from 'webpack';
 import path from "path";
 
+import './src/scripts/build.js';
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -48,7 +50,8 @@ prodConfig.plugins.push(
 prodConfig.plugins.push(
     new CopyWebpackPlugin({
         patterns: [
-            path.resolve(__dirname, "src", "public", "favicon.ico")
+            path.resolve(__dirname, "src", "public", "favicon.ico"),
+            path.resolve(__dirname, "src", "public", "robots.txt")
         ]
     })
 );

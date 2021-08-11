@@ -14,13 +14,30 @@ app.use(express.json());
 // Use gzip
 app.use(compression());
 
-//Serving the files on the dist folder
-app.use(express.static(DIST_DIR));
 
 // Only send index.html when user accesses the root page
 app.get("/", function (req, res) {
+  // No cache
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
+
+// Robots page
+app.get("/robots.txt", function (req, res) {
+  // No cache
+  res.sendFile(path.join(DIST_DIR, "robots.txt"));
+});
+
+// Fav icon
+app.get("/favicon.ico", function (req, res) {
+  // No cache
+  res.sendFile(path.join(DIST_DIR, "favicon.ico"));
+});
+
+// Serve all other files in the dist folder with long cache control
+app.use(express.static(DIST_DIR, {
+  maxAge: "1y",
+  immutable: true,
+}));
 
 //Send index.html when the user access the web
 /*
@@ -28,6 +45,7 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 */
+
 const REPORTS_DIR = __dirname + "/reports";
 if (!fs.existsSync(REPORTS_DIR)) {
   console.error("REPORTS dir does not exist!");

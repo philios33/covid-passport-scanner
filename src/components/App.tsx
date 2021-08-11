@@ -277,8 +277,8 @@ function App() {
     return (
         <div className="App">
             <header>
-                <img className="flag" src={euFlag} />
-                <img className="flag" src={gbFlag} />
+                <img className="flag" src={euFlag} alt="Flag of the European Union" />
+                <img className="flag" src={gbFlag} alt="Flag of Great Britain"/>
                 <h1>EU &amp; UK COVID-19 Passport Scanner</h1>
             </header>
 
@@ -299,7 +299,7 @@ function App() {
                     
                     <div className="grid2x2">
                         <div className="column1">
-                            <p className="notice">Input</p>
+                            <p className="notice"><label htmlFor="inputText">Input</label></p>
                             
 
                             { selectedMediaDeviceId !== null && (
@@ -315,6 +315,7 @@ function App() {
                             <div className="box inputPanel">
                                 <div>
                                     <textarea
+                                        id="inputText"
                                         value={certificateValue}
                                         onChange={handleCertificateValueChange}
                                     >HC1:XXXXXXX</textarea>
@@ -335,7 +336,7 @@ function App() {
                 <br/>
                 
                 <ul>
-                    <li><a target="_blank" href={GithubUrl}>Github project</a></li>
+                    <li><a target="_blank" rel="noopener" href={GithubUrl}>Github project</a></li>
                     <li><a href="#" onClick={showPrivacyPolicy}>Privacy policy</a></li>
                     <li><a href="mailto:phil@code67.com">Email developer</a></li>
                 </ul>
@@ -343,7 +344,7 @@ function App() {
                 <ul className="technicalInfo">
                     <li>{certs.stats.numKeys} trusted public keys from {certs.stats.numIssuers} issuers</li>
                     <li>Key store last updated at: {new Date(certs.stats.buildTime).toLocaleString()} ({Math.round(calculateDaysSince(new Date(certs.stats.buildTime)) * 10) / 10} days ago)</li>
-                    <li>Website build time: {new Date(buildDetails.buildTime).toLocaleString()} ({Math.round(calculateDaysSince(new Date(buildDetails.buildTime)) * 10) / 10} days ago)</li>
+                    <li>Bundle build time: {new Date(buildDetails.buildTime).toLocaleString()} ({Math.round(calculateDaysSince(new Date(buildDetails.buildTime)) * 10) / 10} days ago)</li>
                 </ul>
                 
             </footer>

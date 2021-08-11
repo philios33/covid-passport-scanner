@@ -21,6 +21,11 @@ Then you can run the hot reloading dev server
 - `npm run build`
 - `npm run serve`
 
+## Testing docker image
+
+- `docker build -t scanner .`
+- `docker run -t -i -p 8081:8081 scanner`
+
 
 # Other Useful URLS
 
@@ -43,22 +48,6 @@ Then you can run the hot reloading dev server
 - https://github.com/panzi/verify-ehc/blob/main/verify_ehc.py
 
 # Other TODO
-
-- sudo docker build -t test .
-- sudo docker run -t -i -v "$(pwd)"/server/reports:/home/node/server/reports -p 8081:8081 test
-
-Run certs and flags script first locally
-Then build docker image
-Mount a local dir for the server reports to go
-
-Look in to how it works on the wedding server with docker-compose
-Add script for refreshing certs and flags and redeploying
-
-Then hook it up to the gateway by adding nginx config.
-Point DNS and sort out lets encrypt cert
-Test live traffic is routed properly and that reports save
-Test wedding site still works fine
-Do chrome insights tests for optimisation!
 
 Focus on "critical" stuff "above the flow"
 

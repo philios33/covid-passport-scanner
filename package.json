@@ -40,9 +40,9 @@
     "downloadFlags": "node ./src/scripts/downloadFlags.js",
     "buildCriticalCss": "sass ./src/critical.scss:./src/compiled/critical.css --style compressed --no-source-map",
     "buildTimestamp": "node ./src/scripts/build.js",
-    "prebuild": "npm run buildCriticalCss && npm run buildTimestamp",
+    "prebuild": "npm run buildCriticalCss",
     "build": "webpack --mode production --config webpack.prod.ts",
-    "serve": "node ./src/server/index.js"
+    "serve": "node ./server/index.js"
   },
   "browserslist": {
     "production": [

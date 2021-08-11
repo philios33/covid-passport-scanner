@@ -76,12 +76,12 @@ function DecodedCertificateStatus(props: Props) {
         <div className={"decodedCertificateStatus " + statusClass}>
             {statusClass === "ok" && (
                 <div className="statusIcon">
-                    <img src={greenTick} />
+                    <img src={greenTick} alt="Green tick"/>
                 </div>
             )}
             {statusClass === "notok" && (
                 <div className="statusIcon">
-                    <img src={redCross} />
+                    <img src={redCross} alt="Red cross" />
                 </div>
             )}
             <div className="statusText">
