@@ -1,0 +1,38 @@
+.decodedCertificateStatus {
+    width: 100%;
+    text-align: left;
+    display: flex;
+
+    background-color: white;
+    color: grey;
+    &.ok {
+        background-color: #bbffbb;
+        color: black;
+    }
+    &.notok {
+        background-color: #ffbbbb;
+        color: black;
+    }
+
+    h1 {
+        margin: 0px;
+        padding: 0px;
+        font-size: 14px;
+    }
+
+    .statusIcon {
+        float: left;
+        width: 60px;
+        padding: 10px;
+    }
+
+    .statusText {
+        padding: 10px;
+        flex: 1;
+        p {
+            font-size: 12px;
+            margin: 5px 0px;
+        }
+    }
+
+}

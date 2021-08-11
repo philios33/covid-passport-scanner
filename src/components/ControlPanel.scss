@@ -1,0 +1,76 @@
+.controlPanel {
+    // background-color: green;
+    // height: 10%;
+    padding: 10px;
+    text-align: left;
+
+    .mediaDropdown {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 27px;
+        width: 200px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    button {
+        &.startScanning {
+            background-color: #77aa77;
+        }
+        &.stopScanning {
+            background-color: #aa7777;
+        }
+        
+        box-shadow: 2px 1px 4px black;
+
+        &:active {
+            box-shadow: 2px 1px 0px grey;
+        }
+
+        &:hover {
+            span {
+                text-decoration: underline;
+            }
+        }
+
+        &:disabled {
+            background-color: white;
+            cursor: not-allowed;
+            &:hover {
+                span {
+                text-decoration: none;
+                }
+            }
+        }
+
+        
+        border: none;
+        border-radius: 5px;
+        color: black;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        margin: 5px;
+
+        // vertical-align: top;
+        .icon {
+            display: inline-block;
+            width: 50px;
+            margin-right: 5px;
+        }
+        span {
+            display: inline-block;
+            padding: 18px 0px;
+            vertical-align: top;
+        }
+    }
+
+    .usageStatsControl {
+        margin-top: 27px;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 12px;
+    }
+}
