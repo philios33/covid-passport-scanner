@@ -50,7 +50,7 @@ function App() {
 
     const decodeCertificate = async (certificateValue: string) => {
         try {
-            const result = await verifyEuropeanGreenCertificate(Buffer.from(certificateValue), certs.issuers);
+            const result = await verifyEuropeanGreenCertificate(Buffer.from(certificateValue), certs.keys);
 
             if (result.signatureVerified && result.isValidNow) {
                 successSound.play();

@@ -29,16 +29,11 @@ export type PublicKey = {
     fromUrl: string
     certificate: Certificate | null
 }
-type Issuer = {
-    keys: {
-        [key: string] : PublicKey   
-    }
-}
-export type IssuersMap = {
-    [key: string]: Issuer
+export type KeysMap = {
+    [key: string] : PublicKey
 }
 
-async function importEUCertsFromSwedishUrl(all: IssuersMap) {
+async function importEUCertsFromSwedishUrl(all: KeysMap) {
     const url = 'https://dgcg.covidbevis.se/tp/trust-list';
     const result = await axios({
         url
@@ -99,13 +94,12 @@ async function importEUCertsFromSwedishUrl(all: IssuersMap) {
                             }
                         }
 
-                        if (!(issuer in all)) {
-                            all[issuer] = {
-                                keys: {}
-                            }
+                        // Pointless to save by issuer object, just save everything by key id since they shouldn't collide.
+                        if (kid in all) {
+                            throw new Error("Already found kid: " + key + " in the list");
                         }
 
-                        all[issuer].keys[kid] = {
+                        all[kid] = {
                             issuer,
                             kid,
                             x,
@@ -223,7 +217,7 @@ const decodePublicKeyComponents = (publicKey: string) : {x:string, y:string} => 
     }
 }
 
-async function importGBPublicKeys(all: IssuersMap) {
+async function importGBPublicKeys(all: KeysMap) {
     const url = 'https://covid-status.service.nhsx.nhs.uk/pubkeys/keys.json';
     const result = await axios({
         url
@@ -232,15 +226,15 @@ async function importGBPublicKeys(all: IssuersMap) {
         // OK
         // console.log("Content", result.data);
 
-        if (!("GB" in all)) {
-            all.GB = {
-                keys: {}
-            };
-        }
         for(let i=0; i<result.data.length; i++) {
             const key = result.data[i];
+
+            if (key.kid in all) {
+                throw new Error("This key id already exists, cannot import: " + key.kid);
+            }
+
             const components = decodePublicKeyComponents(key.publicKey);
-            all.GB.keys[key.kid] = {
+            all[key.kid] = {
                 issuer: "GB",
                 kid: key.kid,
                 x: components.x,
@@ -255,35 +249,37 @@ async function importGBPublicKeys(all: IssuersMap) {
 }
 
 (async () => {
-    const issuers: IssuersMap = {}
-    await importEUCertsFromSwedishUrl(issuers);
-    await importGBPublicKeys(issuers);
-    // console.log("FINAL", JSON.stringify(issuers, null, 4));
+    const allKeys: KeysMap = {}
+    await importEUCertsFromSwedishUrl(allKeys);
+    await importGBPublicKeys(allKeys);
+    // console.log("FINAL", JSON.stringify(allKeys, null, 4));
 
     console.log("---");
-    console.log(Object.keys(issuers).length + " issuers imported");
-
-    let keyCount = 0;
-    let certCount = 0;
-    Object.values(issuers).forEach(iss => {
-        Object.values(iss.keys).forEach(pk => {
-            keyCount++;
-            if (pk.certificate) {
-                certCount++;
-            }
-        })
+    
+    let keyCount: number = 0;
+    let certCount: number = 0;
+    let issuersList: Array<string> = [];
+    Object.values(allKeys).forEach(pk => {
+        keyCount++;
+        if (pk.certificate) {
+            certCount++;
+        }
+        if (issuersList.indexOf(pk.issuer) === -1) {
+            issuersList.push(pk.issuer);
+        }
     })
     console.log(keyCount + " keys imported");
     console.log(certCount + " certificates imported");
+    console.log(issuersList.length + " issuers");
     console.log("---");
     
     const allData = {
         stats: {
             numKeys: keyCount,
-            numIssuers: Object.keys(issuers).length,
+            numIssuers: issuersList.length,
             buildTime: (new Date()).toISOString(),
         },
-        issuers
+        keys: allKeys
     }
 
     fs.writeFileSync(__dirname + "/../compiled/certs.json", JSON.stringify(allData, null, 4));

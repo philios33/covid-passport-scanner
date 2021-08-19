@@ -5,7 +5,14 @@ const { default: axios } = require('axios');
 const certs = require('../compiled/certs.json');
 const svgexport = require('svgexport');
 
-const issuerCodes = Object.keys(certs.issuers);
+const issuerCodes = [];
+for(const keyId in certs.keys) {
+    const key = certs.keys[keyId];
+    if (issuerCodes.indexOf(key.issuer) === -1) {
+        issuerCodes.push(key.issuer);
+    }
+}
+
 
 // We assume the issuer code is the 2 character country code.
 const svgDir = __dirname + "/../images/flags/svg";

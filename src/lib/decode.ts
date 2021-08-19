@@ -1,5 +1,5 @@
 
-import { IssuersMap, PublicKey } from '../buildCertBundle';
+import { KeysMap, PublicKey } from '../buildCertBundle';
 import base45 from 'base45';
 // import cbor from 'cbor-web';
 import zlib from 'browserify-zlib';
@@ -47,8 +47,10 @@ export function decodeSignatureErrorCode(code: string) {
     } else if (code === "KEY_NOT_FOUND") {
         return "The public key used to sign this certificate is unknown so we cannot validate it.  This could be because it is a recently expired key, or a recently new key which this website has yet to import."
 
+    /*
     } else if (code === "ISSUER_NOT_FOUND") {
         return "The issuer that signed this certificate is unknown so we cannot validate it."
+        */
 
     } else {
         return "BUG: Unknown error message.";
@@ -432,7 +434,7 @@ export type GreenCertificateResult = {
     healthClaims: HealthClaims
 };
 
-export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedCerts: IssuersMap) : Promise<GreenCertificateResult> {
+export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedKeys: KeysMap) : Promise<GreenCertificateResult> {
     const expectedHeader = buf.slice(0,4).toString();
     if (expectedHeader !== "HC1:") {
         throw new CertificateDecodingError("INCORRECT_HC1_HEADER", "Expected 4 byte header: 'HC1:'");
@@ -485,9 +487,13 @@ export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedCerts: 
         let signatureErrorCode = null as null | string;
         let signatureErrorMessage = null as null | string;
         try {
-            if (issuer in trustedCerts) {
-                const keys = trustedCerts[issuer].keys;
-                const kidb64 = keyId.toString("base64");
+            const kidb64 = keyId.toString("base64");
+
+            // Fix: issuer isn't necessarily the same as the country code of the issuing signing certificate
+            // if (issuer in trustedCerts) {
+                // const keys = trustedCerts[issuer].keys;
+                const keys = trustedKeys;
+                
                 if (kidb64 in keys) {
                     const usedKey = keys[kidb64];
                     signingKey = usedKey;
@@ -525,9 +531,10 @@ export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedCerts: 
                 } else {
                     throw new CertificateDecodingError("KEY_NOT_FOUND", "Could not find certificate signing key " + keyId.toString("hex") + " / " + keyId.toString("base64") + " in " + issuer + " list of keys");
                 }
-            } else {
-                throw new CertificateDecodingError("ISSUER_NOT_FOUND", "Could not find issuer " + issuer + " in list " + Object.keys(trustedCerts).join(","));
-            }
+            // Fix: ISSUER_NOT_FOUND is now obsolete
+            // } else {
+            //     throw new CertificateDecodingError("ISSUER_NOT_FOUND", "Could not find issuer " + issuer + " in list " + Object.keys(trustedCerts).join(",") + " for key id: " + kidb64);
+            // }
         } catch(e) {
             if (e instanceof CertificateDecodingError) {
                 signatureVerified = false;

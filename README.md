@@ -49,5 +49,24 @@ Then you can run the hot reloading dev server
 
 # Other TODO
 
-Focus on "critical" stuff "above the flow"
+The issuer isn't always the country code.
+    Put all trusted certs in single object by key id.
 
+Create component for certificate overview
+    View Name & Dose status, Vaccine name, X Days ago, in a small widget near the top above everything else!
+
+Fix alignment of details
+
+Finish testing all error codes
+
+---
+
+Support other 2 certificates (Wait for data before rendering tho)
+Support RSA public keys (like Lithuania)
+
+Add page for viewing the trusted key store
+Make privacy policy a different URL
+Add Menu at the top
+    Scan, Keys, About, Terms
+
+Implement proper server side rendering for each static page and hydrate the bundle.
