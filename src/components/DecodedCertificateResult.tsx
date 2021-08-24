@@ -31,7 +31,7 @@ function decodeCertificateErrorCode(code: string) {
         return "Bad Health Certificate Structure.";
 
     } else if (code === "INVALID_HC_VERSION") {
-        return "This website does not support this health certificate version.";
+        return "Sorry but this website does not support this health certificate version.  Current version spec can be found here: https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf";
 
     } else if (code === "NOT_YET_IMPLEMENTED") {
         return "This website has not yet implemented the decoding of this certificate type.  Coming soon...";

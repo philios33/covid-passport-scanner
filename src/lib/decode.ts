@@ -1,5 +1,5 @@
 
-import { KeysMap, PublicKey } from '../buildCertBundle';
+import { KeysMap, PublicKey } from '../scripts/buildCertBundle';
 import base45 from 'base45';
 // import cbor from 'cbor-web';
 import zlib from 'browserify-zlib';
@@ -462,17 +462,29 @@ export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedKeys: K
     if (decoded.tag === 18) {
         // Decode the COSE value in to an array of 4 items
         const value = decoded.value;
+        // console.log("VALUE", value);
 
-        const header = value[0];
+        const protectedHeader = value[0];
+        const unprotectedHeader = value[1];
         const payload = value[2];
         // const sig = value[3];
 
         // Decode the header
-        const headerVal = cbor.decode(header);
+        const headerVal = cbor.decode(protectedHeader);
+        // console.log("Header", headerVal);
+
         if (headerVal.get(1) !== -7) {
             throw new CertificateDecodingError("INVALID_PASSPORT_FORMAT", "Header item 1 is expected to equal -7");
         }
-        const keyId = headerVal.get(4);
+        let keyId = headerVal.get(4);
+        if (typeof keyId === "undefined") {
+            // It looks like some contain claim 4 within the 2nd unprotected array map
+            // Not sure if this is valid or not, but I will allow this if the key is found
+            
+            keyId = unprotectedHeader.get(4);
+            // console.log("Trying with", keyId);
+        }
+
         // console.log("HEADER KEY ID", keyId.toString("base64"));
 
         const payloadVal = cbor.decode(payload);
@@ -481,6 +493,8 @@ export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedKeys: K
         const issuedAt = payloadVal.get(6);
         const expiresAt = payloadVal.get(4);
         const myHealthClaims = payloadVal.get(-260);
+
+        // console.log("Health claims", myHealthClaims.get(1).v);
 
         let signingKey = null as null | PublicKey;
         let signatureVerified = false;
@@ -529,7 +543,7 @@ export async function verifyEuropeanGreenCertificate(buf: Buffer, trustedKeys: K
                         throw new CertificateDecodingError("INVALID_SIGNATURE", e.message);
                     }
                 } else {
-                    throw new CertificateDecodingError("KEY_NOT_FOUND", "Could not find certificate signing key " + keyId.toString("hex") + " / " + keyId.toString("base64") + " in " + issuer + " list of keys");
+                    throw new CertificateDecodingError("KEY_NOT_FOUND", "Could not find certificate signing key " + keyId.toString("hex") + " / " + keyId.toString("base64") + " in list of keys");
                 }
             // Fix: ISSUER_NOT_FOUND is now obsolete
             // } else {
