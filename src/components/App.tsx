@@ -282,10 +282,16 @@ function App() {
                 <h1>EU &amp; UK COVID-19 Passport Scanner</h1>
             </header>
 
+            <section>
+                <h2>Covid Passport Scanner</h2>
+                <p>Scan and verify your COVID-19 DCC (Digital COVID Certificate) below</p>
+            </section>
+            
+
             { showingPP ? (
                 <PrivacyPolicy hidePrivacyPolicy={closePrivacyPolicy} />
             ) : (
-                <>
+                <section>
                     <ControlPanel 
                         handleVideoDeviceChange={handleVideoDeviceChange} 
                         isScanning={currentControls !== null} 
@@ -329,7 +335,7 @@ function App() {
                             </div>
                         </div>
                     </div>
-                </>
+                </section>
             )}
             <footer>
                 &copy; 2021 Philip Nicholls
