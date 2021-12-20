@@ -15,3 +15,5 @@
 
 /server/reports/*
 !/server/reports/.gitkeep
+
+/privateREADME.md

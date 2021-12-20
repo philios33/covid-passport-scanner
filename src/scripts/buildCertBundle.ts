@@ -2,6 +2,7 @@ import fs from 'fs';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { Certificate as Cert } from '@fidm/x509';
+import crypto from 'crypto';
 
 // This should scrape all cert URLs and build a trusted cert bundle
 console.log("Grabbing certificates");
@@ -98,6 +99,8 @@ async function importEUCertsFromSwedishUrl(all: KeysMap) {
                         if (kid in all) {
                             throw new Error("Already found kid: " + key + " in the list");
                         }
+
+                        console.log("Storing " + kid + " for " + issuer + " y: " + y + " hash: " + crypto.createHash('md5').update(x + "_" + y).digest('hex'));
 
                         all[kid] = {
                             issuer,
@@ -229,11 +232,14 @@ async function importGBPublicKeys(all: KeysMap) {
         for(let i=0; i<result.data.length; i++) {
             const key = result.data[i];
 
+            const components = decodePublicKeyComponents(key.publicKey);
+
             if (key.kid in all) {
-                throw new Error("This key id already exists, cannot import: " + key.kid);
+                console.warn("Ignoring key " + key.kid + " since it already exists, y: " + components.y + " hash: " + crypto.createHash('md5').update(components.x + "_" + components.y).digest('hex'));
+                continue;
+                // throw new Error("This key id already exists, cannot import: " + key.kid);
             }
 
-            const components = decodePublicKeyComponents(key.publicKey);
             all[key.kid] = {
                 issuer: "GB",
                 kid: key.kid,
